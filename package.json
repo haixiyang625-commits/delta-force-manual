@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "import:zero-dam": "node scripts/import-official-points.mjs"
+    "import:zero-dam": "node scripts/import-official-points.mjs",
+    "build:gitee": "BASE_PATH=/delta-force-manual/ npm run build"
   },
   "dependencies": {
     "react": "^19.2.6",

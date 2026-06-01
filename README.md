@@ -2,6 +2,17 @@
 
 帮助新手更快上手《三角洲行动》烽火地带模式。当前版本：**零号大坝**物资点，数据来自腾讯官方地图工具。
 
+## 线上访问（双线路）
+
+| 线路 | 平台 | 适合 |
+|------|------|------|
+| **国内** | 阿里云 OSS | 中国大陆用户 |
+| **海外** | Vercel | 海外或可直接访问 Vercel 的用户 |
+
+- 国内部署步骤 → **[docs/deploy-aliyun.md](docs/deploy-aliyun.md)**  
+- 总览 → **[docs/deploy-china.md](docs/deploy-china.md)**  
+- 页头「国内 / 海外」按钮：在 `.env.production` 或 Vercel 环境变量中配置 `VITE_SITE_CN`、`VITE_SITE_INTL`（见 [.env.example](.env.example)）
+
 ## 数据可靠性
 
 | 项目 | 说明 |
@@ -11,7 +22,7 @@
 | 出现条件 | 官方字段原文（如「随机刷新」「概率出现」） |
 | 难度 | 常规 351 点 / 机密 363 点 / 绝密 380 点（仅物资容器） |
 
-**不包含**自编网格假点。赛季更新后请重新导入。
+赛季更新后执行 `npm run import:zero-dam` 并重新部署两处托管。
 
 ## 开发
 
@@ -26,8 +37,6 @@ npm run dev
 npm run import:zero-dam
 ```
 
-会下载官方 `map_article.js`、`daba_floor.js`（若本地不存在），并生成 `src/data/zero-dam/official-points.json`。
-
 ## 构建
 
 ```bash
@@ -35,49 +44,34 @@ npm run build
 npm run preview
 ```
 
-构建产物在 `dist/` 目录，可部署到任意静态网站托管。
+## 部署与更新
 
-## 部署（让别人通过网址访问）
-
-推荐 **GitHub + Vercel**（免费 HTTPS、自动更新、国内一般可访问）。
-
-### 1. 推到 GitHub
+### 海外（Vercel，自动）
 
 ```bash
-cd /Users/yhx/Desktop/work/my-project/delta-force-manual
-git init
-git add .
-git commit -m "初始版本：零号大坝官方物资地图"
+git push origin main
 ```
 
-在 GitHub 新建空仓库（不要勾选 README），然后：
+GitHub 已连接 Vercel 时，推送即自动构建。
+
+### 国内（阿里云 OSS，手动上传）
 
 ```bash
-git remote add origin https://github.com/你的用户名/delta-force-manual.git
-git branch -M main
-git push -u origin main
+npm run build
+# 将 dist/ 内全部文件上传到 OSS Bucket 根目录
 ```
 
-### 2. 用 Vercel 发布
+详见 [docs/deploy-aliyun.md](docs/deploy-aliyun.md)。
 
-1. 打开 [https://vercel.com](https://vercel.com)，用 GitHub 登录  
-2. **Add New → Project**，导入刚推送的仓库  
-3. 保持默认：Build Command `npm run build`，Output Directory `dist`  
-4. 点 **Deploy**，约 1–2 分钟后会得到地址，形如 `https://delta-force-manual.vercel.app`
+### 环境变量（双线路链接）
 
-之后每次 `git push`，网站会自动重新构建。
+```bash
+cp .env.example .env.production
+# 填写 VITE_SITE_CN、VITE_SITE_INTL 后
+npm run build
+```
 
-### 其他平台（任选）
-
-| 平台 | 构建命令 | 输出目录 |
-|------|----------|----------|
-| [Cloudflare Pages](https://pages.cloudflare.com) | `npm run build` | `dist` |
-| [Netlify](https://www.netlify.com) | `npm run build` | `dist` |
-| GitHub Pages | 见下方说明 | `dist` |
-
-**自定义域名**：在 Vercel / Cloudflare 项目设置里添加你的域名，按提示配置 DNS 即可。
-
-**GitHub Pages**（仓库子路径 `https://用户名.github.io/仓库名/`）需在 `vite.config.ts` 设置 `base: '/仓库名/'` 后再构建；根域名部署则不需要。
+Vercel：**Settings → Environment Variables** 添加相同变量并 Redeploy。
 
 ## 免责声明
 

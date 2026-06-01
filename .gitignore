@@ -11,6 +11,9 @@ node_modules
 dist
 dist-ssr
 *.local
+.env
+.env.production
+.env.*.local
 
 # 官方原始 JS（体积大，可用 npm run import:zero-dam 重新下载）
 scripts/map_article.js

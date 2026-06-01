@@ -10,6 +10,7 @@ import { MapViewer } from './components/MapViewer'
 import { Sidebar, highValueTypes } from './components/Sidebar'
 import { LootDetail } from './components/LootDetail'
 import { PointList } from './components/PointList'
+import { MirrorLinks } from './components/MirrorLinks'
 
 function App() {
   const [difficulty, setDifficulty] = useState<MapDifficulty>('常规')
@@ -70,6 +71,7 @@ function App() {
         <p className="mt-2 text-xs text-[#3fb950]">
           数据来源：{officialBundle.dataSource.name} · 坐标与出现条件为官方字段
         </p>
+        <MirrorLinks />
       </header>
 
       <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
